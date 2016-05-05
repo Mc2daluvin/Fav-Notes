@@ -29,7 +29,8 @@ class AddPostVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        
+        imagePicker.allowsEditing = true
+       // imagePicker.sourceType = .Camera
         titleField.delegate = self
 
         descriptionField.delegate = self
@@ -88,12 +89,38 @@ titleField.endEditing(true)
         
     }
     
+//    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+//        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+//        imageView.image = image
+//        
+//        
+//        
+//    }
+    
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
-        imageView.image = image
-        
-        
-        
+        imageView.image = editingInfo![UIImagePickerControllerOriginalImage] as? UIImage
     }
+    
+    
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        animateViewMoving(true, moveValue: 200)
+    }
+    func textFieldDidEndEditing(textField: UITextField) {
+        animateViewMoving(false, moveValue: 200)
+    }
+    func animateViewMoving (up:Bool, moveValue :CGFloat){
+        let movementDuration:NSTimeInterval = 0.3
+        let movement:CGFloat = ( up ? -moveValue : moveValue)
+        UIView.beginAnimations( "animateView", context: nil)
+        UIView.setAnimationBeginsFromCurrentState(true)
+        UIView.setAnimationDuration(movementDuration )
+        self.view.frame = CGRectOffset(self.view.frame, 0,  movement)
+        UIView.commitAnimations()
+    }
+    
+        
     
 }
